@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>混雑状況入力</title>
+</head>
+<body>
+  <h1>混雑状況フォーム</h1>
+  <form method="post" action="/update_status">
+    <input type="hidden" name="class" value="{{ class_id }}">
+
+    <label>クラス:</label>
+    <strong>{{ class_id }}</strong><br>
+
+    <label>出し物の名前:</label>
+    <input type="text" name="booth_name" id="booth-input" required value="{{ booth_name }}"><br>
+
+    <label>混雑状況:</label><br>
+    <label><input type="radio" name="status" value="1" {% if status == 1 %}checked{% endif %}> 快適</label><br>
+    <label><input type="radio" name="status" value="2" {% if status == 2 %}checked{% endif %}> やや混雑</label><br>
+    <label><input type="radio" name="status" value="3" {% if status == 3 %}checked{% endif %}> 混雑</label><br>
+
+    <button type="submit">登録・更新</button>
+  </form>
+
+  <a href="/">戻る</a>
+</body>
+</html>
+<script>
+  document.querySelectorAll('input[type="radio"][name="status"]').forEach(function(radio) {
+    radio.addEventListener('change', function() {
+      this.form.submit();
+    });
+  });
+</script>

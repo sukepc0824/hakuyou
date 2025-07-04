@@ -1,0 +1,17 @@
+[
+  {
+    "class": "1-2",
+    "booth_name": "プラネ",
+    "status": 3
+  },
+  {
+    "class": "1-7",
+    "booth_name": "プラネタリウム",
+    "status": 1
+  },
+  {
+    "class": "1-8",
+    "booth_name": "プラネタリウム",
+    "status": 3
+  }
+]

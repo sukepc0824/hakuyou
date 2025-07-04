@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>お知らせ入力</title>
+</head>
+<body>
+  <h2>お知らせを追加</h2>
+  <form method="post">
+    <input type="text" name="message" required placeholder="お知らせ内容">
+    <button type="submit">追加</button>
+  </form>
+
+  <h3>現在のお知らせ</h3>
+  <ul>
+    {% for n in notifications %}
+      <li><strong>{{ n.time }}</strong> {{ n.message }}</li>
+    {% endfor %}
+  </ul>
+  <a href="/">戻る</a>
+</body>
+</html>
