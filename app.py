@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, jsonify
 import json
 import os
 from datetime import datetime
+import pytz
 
 app = Flask(__name__)
 DATA_DIR = "data"
@@ -71,7 +72,7 @@ def api_update_status():
     cls = data["class"]
     booth_name = data["booth_name"]
     status = int(data["status"])
-    now = datetime.now().strftime("%H:%M")
+    now = datetime.now(pytz.timezone("Asia/Tokyo")).strftime("%H:%M")
 
     booths = load_booths()
     for booth in booths:
@@ -99,7 +100,7 @@ def notify():
         msg = request.form["message"]
         notifs = load_notifications()
         notifs.insert(0, {
-            "time": datetime.now().strftime("%H:%M"),
+            "time": datetime.now(pytz.timezone("Asia/Tokyo")).strftime("%H:%M"),
             "message": f"{msg} ({caller})"
         })
         save_notifications(notifs)
