@@ -46,38 +46,61 @@ def admin():
 def admin_class(class_id):
     booths = load_booths()
     target = next((b for b in booths if b["class"] == class_id), None)
+
     if target:
-        return render_template("admin.html", class_id=class_id, booth_name=target["booth_name"], status=target["status"])
+        booth_name = target.get("booth_name", "")
+        history = target.get("history", [])
+        latest_status = history[-1]["status"] if history else 1  # デフォルト1=空
     else:
-        return render_template("admin.html", class_id=class_id, booth_name="", status=1)
+        booth_name = ""
+        latest_status = 1
+
+    return render_template(
+        "admin.html",
+        class_id=class_id,
+        booth_name=booth_name,
+        status=latest_status,
+        booths=booths
+    )
 
 
-@app.route("/update_status", methods=["POST"])
-def update_status():
-    cls = request.form["class"]
-    new_status = int(request.form["status"])
-    new_booth_name = request.form["booth_name"]
+
+@app.route("/api/update_status", methods=["POST"])
+def api_update_status():
+    data = request.get_json()
+    cls = data["class"]
+    booth_name = data["booth_name"]
+    status = int(data["status"])
+    now = datetime.now().strftime("%H:%M")
+
     booths = load_booths()
     for booth in booths:
         if booth["class"] == cls:
-            booth["status"] = new_status
-            booth["booth_name"] = new_booth_name
+            booth["booth_name"] = booth_name
+            booth.setdefault("history", []).append({ "time": now, "status": status })
             break
     else:
-        booths.append({"class": cls, "booth_name": new_booth_name, "status": new_status})
+        booths.append({
+            "class": cls,
+            "booth_name": booth_name,
+            "history": [ { "time": now, "status": status } ]
+        })
+
     save_booths(booths)
-    return redirect(f"/admin/{cls}")
+    return jsonify(success=True)
+
 
 
 
 @app.route("/notify", methods=["GET", "POST"])
 def notify():
     if request.method == "POST":
+        caller = request.form["caller"]
         msg = request.form["message"]
         notifs = load_notifications()
         notifs.insert(0, {
             "time": datetime.now().strftime("%H:%M"),
-            "message": msg
+            "message": f"{msg} ({caller})"
         })
         save_notifications(notifs)
         return redirect("/notify")
@@ -87,11 +110,36 @@ def notify():
 #HTML側
 @app.route("/api/booths")
 def api_booths():
-    return jsonify(load_booths())
+    booths = load_booths()
+    for booth in booths:
+        if "history" in booth and booth["history"]:
+            booth["status"] = booth["history"][-1]["status"]
+    return jsonify(booths)
+
+@app.route("/api/status_history/<class_id>")
+def api_status_history_class(class_id):
+    booths = load_booths()
+    for booth in booths:
+        if booth["class"] == class_id:
+            return jsonify({
+                "class": booth["class"],
+                "booth_name": booth["booth_name"],
+                "history": booth.get("history", [])
+            })
+    return jsonify({"error": "クラスが見つかりません"}), 404
 
 @app.route("/api/notifications")
 def api_notifications():
     return jsonify(load_notifications())
+
+@app.route("/delete_notification", methods=["POST"])
+def delete_notification():
+    time = request.form["time"]
+    message = request.form["message"]
+    notifications = load_notifications()
+    notifications = [n for n in notifications if not (n["time"] == time and n["message"] == message)]
+    save_notifications(notifications)
+    return redirect("/notify")
 
 
 if __name__ == "__main__":

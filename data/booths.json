@@ -1,17 +1,116 @@
 [
   {
     "class": "1-2",
-    "booth_name": "プラネ",
-    "status": 3
+    "booth_name": "プラネタリウム",
+    "history": [
+      {
+        "time": "10:00",
+        "status": 2
+      },
+      {
+        "time": "10:30",
+        "status": 3
+      }
+    ]
   },
   {
-    "class": "1-7",
-    "booth_name": "プラネタリウム",
-    "status": 1
+    "class": "2-1",
+    "booth_name": "休憩所",
+    "history": [
+      {
+        "time": "10:00",
+        "status": 2
+      },
+      {
+        "time": "10:30",
+        "status": 2
+      },
+      {
+        "time": "01:13",
+        "status": 3
+      },
+      {
+        "time": "01:13",
+        "status": 2
+      }
+    ]
   },
   {
     "class": "1-8",
-    "booth_name": "プラネタリウム",
-    "status": 3
+    "booth_name": "大分駅の歴史",
+    "history": [
+      {
+        "time": "10:00",
+        "status": 2
+      },
+      {
+        "time": "10:30",
+        "status": 3
+      },
+      {
+        "time": "23:07",
+        "status": 4
+      },
+      {
+        "time": "23:10",
+        "status": 4
+      },
+      {
+        "time": "23:29",
+        "status": 2
+      },
+      {
+        "time": "23:29",
+        "status": 3
+      },
+      {
+        "time": "23:29",
+        "status": 3
+      },
+      {
+        "time": "23:29",
+        "status": 3
+      },
+      {
+        "time": "23:29",
+        "status": 3
+      },
+      {
+        "time": "23:29",
+        "status": 1
+      },
+      {
+        "time": "23:30",
+        "status": 3
+      },
+      {
+        "time": "23:34",
+        "status": 2
+      },
+      {
+        "time": "23:36",
+        "status": 1
+      },
+      {
+        "time": "23:37",
+        "status": 2
+      },
+      {
+        "time": "23:40",
+        "status": 3
+      },
+      {
+        "time": "23:41",
+        "status": 1
+      },
+      {
+        "time": "23:44",
+        "status": 2
+      },
+      {
+        "time": "23:45",
+        "status": 1
+      }
+    ]
   }
 ]

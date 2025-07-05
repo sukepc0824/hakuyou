@@ -9,14 +9,7 @@
     <link rel="stylesheet" href="/static/index.css">
     <style>
         body {
-            font-family: sans-serif;
             background: #f3f3f3;
-        }
-
-        main {
-            padding: 44px 24px;
-            max-width: 800px;
-            margin: auto;
         }
 
         h1.time {
@@ -26,6 +19,7 @@
         h2 {
             font-weight: 500;
             margin-top: 30px;
+            font-size: 20px;
             margin-bottom: 6px;
         }
 
@@ -48,18 +42,29 @@
             flex-direction: column;
             width: calc(33% - 5px);
             flex-shrink: 0;
-            height: 100px;
             overflow: hidden
+        }
+
+        .booth .class {
+            opacity: 0.6;
         }
 
         .content {
             flex-grow: 1;
-            padding: 10px 14px;
+            padding: 14px 14px;
         }
 
         .status {
-            padding: 5px 10px;
+            height: 38px;
+            align-items: center;
+            padding: 0 14px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+        }
 
+        .status img{
+            height:20px
         }
 
         .status-1 {
@@ -79,13 +84,26 @@
 
         /* 混雑 */
         .notifications {
-            background: #333;
-            color: white;
-            padding: 1em;
+            border: 1px solid #ccc;
+            background: #ffffff;
             margin-bottom: 1em;
             border-radius: 6px;
-            max-height: 100px;
+            max-height: 300px;
             overflow-y: scroll;
+        }
+
+        .notifications>div {
+            padding: 10px 14px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .notifications>div:last-child {
+            border: none;
+        }
+
+        footer {
+            text-align: center;
+            opacity : 0.5;
         }
     </style>
 </head>
@@ -93,8 +111,10 @@
 <body>
     <main>
         <header>
+            <div class="title">
             <h1>柏葉祭</h1>
-            <p>科学部情報班が運営するシステムです。情報は自動更新されます。</p>
+            <p>情報はすべて自動で更新されます</p>
+            </div>
         </header>
 
         <h2>お知らせ</h2>
@@ -104,6 +124,9 @@
         <h2>混雑状況</h2>
         <div id="booth-list"></div>
     </main>
+    <footer>
+        <p>開発: 科学部情報班 Sc!Techs</p>
+    </footer>
 
     <script>
         async function fetchData() {
@@ -113,8 +136,9 @@
 
             const booths = await boothsRes.json();
             const notifications = await notifyRes.json();
-
+            booths.sort((a, b) => a.class.localeCompare(b.class, 'ja'));
             const boothList = document.getElementById("booth-list");
+            boothList.innerHTML = ''
             booths.forEach(b => {
                 const div = document.createElement("div");
                 div.className = `booth`;
@@ -123,20 +147,26 @@
             <div class="class">${b.class}</div>
             <div class="name">${b.booth_name}</div>
           </div>
-          <div class="status-${b.status} status">${['快適', 'やや混雑', '混雑'][b.status - 1]}</div>
+          <div class="status-${b.status} status">
+            <p>${['快適', 'やや混雑', '混雑'][b.status - 1]}</p>
+            <img src='/static/img/${b.status}.svg'>
+          </div>
         `;
                 boothList.appendChild(div);
             });
 
             const notifyBox = document.getElementById("notifications");
+            notifyBox.innerHTML = ''
             notifications.forEach(n => {
-                const p = document.createElement("p");
-                p.innerHTML = `${n.time} ${n.message}`;
-                notifyBox.appendChild(p);
+                const div = document.createElement("div");
+                div.innerHTML = `<span style="opacity:0.6">${n.time}</span> ${n.message}`;
+                notifyBox.appendChild(div);
             });
         }
-
-        fetchData();
+     fetchData();
+        setInterval(() => {
+               fetchData();
+        }, 10000);
     </script>
 </body>
 

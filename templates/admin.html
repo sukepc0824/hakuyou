@@ -1,35 +1,150 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
-  <title>混雑状況入力</title>
+  <title>混雑状況入力 - {{ class_id }}</title>
+
+  <!-- reset.css modern-css-reset -->
+  <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+  <link rel="stylesheet" href="/static/index.css">
+  <style>
+    .history {
+      padding: 0.5em;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+
+
+    label {
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .segmented {
+      display: flex;
+    }
+
+
+    input[type='radio'] {
+      display: none;
+    }
+
+    .segmented .label {
+      /* 右端以外の枠線 */
+      border: 1px #ccc;
+      border-style: solid none solid solid;
+
+      /* 隙間を詰める */
+      float: left;
+
+      /* 背景グラデーション */
+      flex-shrink: 0;
+      width: 120px;
+      background-color: #eee;
+
+      /* ラベルテキスト */
+      color: #111;
+      text-align: center;
+
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .segmented :first-child .label {
+      border-radius: 10px 0 0 10px;
+    }
+
+    /* 末尾のもの */
+    .segmented :last-child .label {
+      border-right-style: solid;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .segmented input:checked+.label {
+      /* 文字色を変える */
+      color: #fff;
+
+      /* 背景色を変える */
+      background-color: #1976d2;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>混雑状況フォーム</h1>
-  <form method="post" action="/update_status">
-    <input type="hidden" name="class" value="{{ class_id }}">
+  <main>
+    <h1>{{ class_id }}の混雑状況を更新</h1>
 
-    <label>クラス:</label>
-    <strong>{{ class_id }}</strong><br>
+    <h3>名前:</h3>
+    <input type="text" id="booth-input" required>
 
-    <label>出し物の名前:</label>
-    <input type="text" name="booth_name" id="booth-input" required value="{{ booth_name }}"><br>
+    <h3>混雑状況:</h3>
+    <span class="segmented">
+      <label><input type="radio" name="status" value="1"><span class="label">快適</span></label><br>
+      <label><input type="radio" name="status" value="2"><span class="label">やや快適</span></label><br>
+      <label><input type="radio" name="status" value="3"><span class="label">混雑</span><br><br>
+    </span>
+    <h3>履歴</h3>
+    <div class="history">
+      <ul id="history-list"></ul>
+    </div>
+  </main>
 
-    <label>混雑状況:</label><br>
-    <label><input type="radio" name="status" value="1" {% if status == 1 %}checked{% endif %}> 快適</label><br>
-    <label><input type="radio" name="status" value="2" {% if status == 2 %}checked{% endif %}> やや混雑</label><br>
-    <label><input type="radio" name="status" value="3" {% if status == 3 %}checked{% endif %}> 混雑</label><br>
+  <script>
+    const classId = "{{ class_id }}";
+    const boothInput = document.getElementById("booth-input");
+    const historyList = document.getElementById("history-list");
 
-    <button type="submit">登録・更新</button>
-  </form>
+    // 初期データ取得
+    fetch(`/api/status_history/${classId}`)
+      .then(res => res.json())
+      .then(data => {
+        boothInput.value = data.booth_name || "";
+        const latest = data.history?.[data.history.length - 1];
+        if (latest) {
+          const radio = document.querySelector(`input[name='status'][value='${latest.status}']`);
+          if (radio) radio.checked = true;
+        }
 
-  <a href="/">戻る</a>
+        // 履歴表示
+        historyList.innerHTML = "";
+        data.history?.reverse();
+        data.history?.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = `${item.time} - ${['空', '快適', 'やや混雑', '混雑'][item.status - 1]}`;
+          historyList.appendChild(li);
+        });
+      });
+
+    // 更新ボタン
+    document.querySelectorAll("input[type='radio']").forEach(element => {
+      element.addEventListener("click", () => {
+        const booth_name = boothInput.value;
+        const status = document.querySelector("input[name='status']:checked")?.value;
+
+        if (!booth_name || !status) {
+          alert("出し物名と混雑状況を入力してください");
+          return;
+        }
+
+        fetch("/api/update_status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            class: classId,
+            booth_name,
+            status: parseInt(status)
+          })
+        }).then(res => {
+          if (res.ok) {
+            location.reload();
+          } else {
+            alert("更新に失敗しました");
+          }
+        });
+      });
+    })
+  </script>
 </body>
+
 </html>
-<script>
-  document.querySelectorAll('input[type="radio"][name="status"]').forEach(function(radio) {
-    radio.addEventListener('change', function() {
-      this.form.submit();
-    });
-  });
-</script>
