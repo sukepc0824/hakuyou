@@ -129,44 +129,63 @@
     </footer>
 
     <script>
-        async function fetchData() {
-            const [boothsRes, notifyRes] = await Promise.all([
-                fetch('/api/booths'), fetch('/api/notifications')
-            ]);
+    let lastBooths = null;
+    let lastNotifications = null;
 
-            const booths = await boothsRes.json();
-            const notifications = await notifyRes.json();
-            booths.sort((a, b) => a.class.localeCompare(b.class, 'ja'));
-            const boothList = document.getElementById("booth-list");
-            boothList.innerHTML = ''
-            booths.forEach(b => {
-                const div = document.createElement("div");
-                div.className = `booth`;
-                div.innerHTML = `
-          <div class="content">
-            <div class="class">${b.class}</div>
-            <div class="name">${b.booth_name}</div>
-          </div>
-          <div class="status-${b.status} status">
-            <p>${['快適', 'やや混雑', '混雑'][b.status - 1]}</p>
-            <img src='/static/img/${b.status}.svg'>
-          </div>
-        `;
-                boothList.appendChild(div);
-            });
+    async function fetchData() {
+        const [boothsRes, notifyRes] = await Promise.all([
+            fetch('/api/booths'),
+            fetch('/api/notifications')
+        ]);
 
-            const notifyBox = document.getElementById("notifications");
-            notifyBox.innerHTML = ''
-            notifications.forEach(n => {
-                const div = document.createElement("div");
-                div.innerHTML = `<span style="opacity:0.6">${n.time}</span> ${n.message}`;
-                notifyBox.appendChild(div);
-            });
+        const booths = await boothsRes.json();
+        const notifications = await notifyRes.json();
+
+        // 比較用に文字列化（順序を統一しておく）
+        booths.sort((a, b) => a.class.localeCompare(b.class, 'ja'));
+        const boothsStr = JSON.stringify(booths);
+        const notifyStr = JSON.stringify(notifications);
+
+        // 前回と同じなら DOM 更新をスキップ
+        if (boothsStr === lastBooths && notifyStr === lastNotifications) {
+            return;
         }
-     fetchData();
-        setInterval(() => {
-               fetchData();
-        }, 10000);
+
+        // --- Booths 更新 ---
+        const boothList = document.getElementById("booth-list");
+        boothList.innerHTML = '';
+        booths.forEach(b => {
+            const div = document.createElement("div");
+            div.className = `booth`;
+            div.innerHTML = `
+              <div class="content">
+                <div class="class">${b.class}</div>
+                <div class="name">${b.booth_name}</div>
+              </div>
+              <div class="status-${b.status} status">
+                <p>${['快適', 'やや混雑', '混雑'][b.status - 1]}</p>
+                <img src='/static/img/${b.status}.svg'>
+              </div>
+            `;
+            boothList.appendChild(div);
+        });
+
+        // --- Notifications 更新 ---
+        const notifyBox = document.getElementById("notifications");
+        notifyBox.innerHTML = '';
+        notifications.forEach(n => {
+            const div = document.createElement("div");
+            div.innerHTML = `<span style="opacity:0.6">${n.time}</span> ${n.message}`;
+            notifyBox.appendChild(div);
+        });
+
+        // 今回のデータを保存
+        lastBooths = boothsStr;
+        lastNotifications = notifyStr;
+    }
+
+    fetchData();
+    setInterval(fetchData, 10000);
     </script>
 </body>
 
