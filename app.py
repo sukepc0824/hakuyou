@@ -3,7 +3,7 @@ import json
 import os
 from datetime import datetime
 import pytz
-
+#test 2
 app = Flask(__name__)
 DATA_DIR = "data"
 BOOTH_FILE = os.path.join(DATA_DIR, "booths.json")
