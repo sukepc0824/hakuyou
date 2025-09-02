@@ -1,114 +1,100 @@
 [
   {
-    "class": "1-2",
-    "booth_name": "プラネタリウム",
+    "class": "1-1",
+    "booth_name": "伝統衣装",
     "history": [
       {
-        "time": "10:00",
-        "status": 2
-      },
-      {
-        "time": "10:30",
-        "status": 3
+        "time": "00:00",
+        "status": 1
       }
     ]
   },
   {
-    "class": "2-1",
-    "booth_name": "休憩所",
+    "class": "1-2",
+    "booth_name": "お化け屋敷",
     "history": [
       {
-        "time": "10:00",
-        "status": 2
-      },
+        "time": "00:00",
+        "status": 1
+      }
+    ]
+  },
+  {
+    "class": "1-4",
+    "booth_name": "リアル脱出ゲーム",
+    "history": [
       {
-        "time": "10:30",
-        "status": 2
-      },
+        "time": "00:00",
+        "status": 1
+      }
+    ]
+  },
+  {
+    "class": "1-5",
+    "booth_name": "数学の部屋",
+    "history": [
       {
-        "time": "01:13",
-        "status": 3
-      },
+        "time": "00:00",
+        "status": 1
+      }
+    ]
+  },
+  {
+    "class": "1-6",
+    "booth_name": "未確定",
+    "history": [
       {
-        "time": "01:13",
-        "status": 2
+        "time": "00:00",
+        "status": 1
       }
     ]
   },
   {
     "class": "1-8",
-    "booth_name": "大分駅の歴史",
+    "booth_name": "未確定",
     "history": [
       {
-        "time": "10:00",
-        "status": 2
-      },
-      {
-        "time": "10:30",
-        "status": 3
-      },
-      {
-        "time": "23:07",
-        "status": 4
-      },
-      {
-        "time": "23:10",
-        "status": 4
-      },
-      {
-        "time": "23:29",
-        "status": 2
-      },
-      {
-        "time": "23:29",
-        "status": 3
-      },
-      {
-        "time": "23:29",
-        "status": 3
-      },
-      {
-        "time": "23:29",
-        "status": 3
-      },
-      {
-        "time": "23:29",
-        "status": 3
-      },
-      {
-        "time": "23:29",
+        "time": "00:00",
         "status": 1
-      },
+      }
+    ]
+  },
+  {
+    "class": "2-2",
+    "booth_name": "格付けチェック",
+    "history": [
       {
-        "time": "23:30",
-        "status": 3
-      },
-      {
-        "time": "23:34",
-        "status": 2
-      },
-      {
-        "time": "23:36",
+        "time": "00:00",
         "status": 1
-      },
+      }
+    ]
+  },
+  {
+    "class": "2-4",
+    "booth_name": "キッザニア",
+    "history": [
       {
-        "time": "23:37",
-        "status": 2
-      },
-      {
-        "time": "23:40",
-        "status": 3
-      },
-      {
-        "time": "23:41",
+        "time": "00:00",
         "status": 1
-      },
+      }
+    ]
+  },
+  {
+    "class": "2-5",
+    "booth_name": "カジノ",
+    "history": [
       {
-        "time": "23:44",
-        "status": 2
-      },
+        "time": "00:00",
+        "status": 1
+      }
+    ]
+  },
+  {
+    "class": "2-7",
+    "booth_name": "参加型実験",
+    "history": [
       {
-        "time": "23:45",
+        "time": "00:00",
         "status": 1
       }
     ]
