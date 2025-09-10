@@ -1,7 +1,7 @@
 [
   {
     "class": "1-1",
-    "booth_name": "伝統衣装",
+    "booth_name": "伝統衣装フォトスポット",
     "history": [
       {
         "time": "00:00",
@@ -11,7 +11,7 @@
   },
   {
     "class": "1-2",
-    "booth_name": "お化け屋敷",
+    "booth_name": "呪われた教室",
     "history": [
       {
         "time": "00:00",
@@ -21,7 +21,7 @@
   },
   {
     "class": "1-4",
-    "booth_name": "リアル脱出ゲーム",
+    "booth_name": "犯人を探せ!",
     "history": [
       {
         "time": "00:00",
@@ -41,7 +41,7 @@
   },
   {
     "class": "1-6",
-    "booth_name": "未確定",
+    "booth_name": "ランプの世界",
     "history": [
       {
         "time": "00:00",
@@ -51,7 +51,7 @@
   },
   {
     "class": "1-8",
-    "booth_name": "未確定",
+    "booth_name": "星空迷宮",
     "history": [
       {
         "time": "00:00",
@@ -81,7 +81,7 @@
   },
   {
     "class": "2-5",
-    "booth_name": "カジノ",
+    "booth_name": "世界のアソビ",
     "history": [
       {
         "time": "00:00",
@@ -91,7 +91,17 @@
   },
   {
     "class": "2-7",
-    "booth_name": "参加型実験",
+    "booth_name": "ラボ777",
+    "history": [
+      {
+        "time": "00:00",
+        "status": 1
+      }
+    ]
+  },
+  {
+    "class": "2-8",
+    "booth_name": "理数科研究発表",
     "history": [
       {
         "time": "00:00",
